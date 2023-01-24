@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Button, Item } from './ContactList.styled';
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/operations';
+import { formatTime } from 'utils/formatTime';
 
 export const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
@@ -10,8 +11,10 @@ export const ContactList = ({ contacts }) => {
     <ul>
       {contacts.map(({ id, name, phone, createdAt }) => (
         <Item key={id}>
-          <p>created: {createdAt}</p>
-          {name}: {phone}
+          <p> created: {formatTime(createdAt)}</p>
+          <p>
+            {name}: {phone}
+          </p>
           <Button type="button" onClick={() => dispatch(deleteContact(id))}>
             Delete
           </Button>
