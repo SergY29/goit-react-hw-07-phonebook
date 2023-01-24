@@ -33,21 +33,17 @@ export const contactSlice = createSlice({
         [addContact.fulfilled](state, action) {
             state.contacts.isLoading = false;
             state.contacts.error = null;
-            state.contacts.items.splice(0, 0, action.payload);
-        }, prepare(name, phone) {
-            return {
-                payload: {
-                    name,
-                    phone,
-                },
-            };
+            state.contacts.items.push(action.payload);
+
         },
         [addContact.rejected]: handleRejected,
         [deleteContact.pending]: handlePending,
         [deleteContact.fulfilled](state, action) {
             state.contacts.isLoading = false;
             state.contacts.error = null;
-            const index = state.items.findIndex(task => task.id === action.payload);
+            const index = state.contacts.items.findIndex(
+                task => task.id === action.payload.id
+            );
             state.contacts.items.splice(index, 1);
         },
         [deleteContact.rejected]: handleRejected,
