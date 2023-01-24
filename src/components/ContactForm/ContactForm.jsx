@@ -40,7 +40,7 @@ export const ContactForm = ({ contacts }) => {
     if (notUniqueName) {
       return alert(`${name} is alredy in contacts!`);
     }
-    dispatch(addContact(name, phone));
+    dispatch(addContact({ name, phone }));
     setName('');
     setNumber('');
   };
