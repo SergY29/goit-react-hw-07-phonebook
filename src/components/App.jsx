@@ -26,9 +26,9 @@ export const App = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  // const filteredNames = contacts.filter(contact =>
-  //   contact.name.toLowerCase().includes(filter.toLowerCase())
-  // );
+  const filteredNames = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   console.log(contacts);
 
@@ -46,7 +46,7 @@ export const App = () => {
           <h2>Contacts</h2>
           <Filter filter={filter} onFilter={handleFilter} />
           {isLoading && !error && <b>Request in progress...</b>}
-          <ContactList contacts={contacts} />
+          <ContactList contacts={filteredNames} />
         </>
       )}
     </Container>
