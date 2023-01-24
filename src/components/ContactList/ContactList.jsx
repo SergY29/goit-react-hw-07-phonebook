@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import { Button, Item } from './ContactList.styled';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactSlice';
+import { deleteContact } from 'redux/operations';
 
 export const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
 
   return (
     <ul>
-      {contacts.map(({ id, name, number }) => (
+      {contacts.map(({ id, name, phone, createdAt }) => (
         <Item key={id}>
-          {name}: {number}
+          <p>created: {createdAt}</p>
+          {name}: {phone}
           <Button type="button" onClick={() => dispatch(deleteContact(id))}>
             Delete
           </Button>
@@ -23,7 +24,8 @@ export const ContactList = ({ contacts }) => {
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.exact({
-      number: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
     })

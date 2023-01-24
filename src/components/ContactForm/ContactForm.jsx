@@ -2,11 +2,11 @@ import { useState, useMemo } from 'react';
 import { Form, Label, Input } from './ContactForm.styled';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactSlice';
+import { addContact } from 'redux/operations';
 
 export const ContactForm = ({ contacts }) => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
   const dispatch = useDispatch();
 
   const notUniqueName = useMemo(
@@ -40,7 +40,7 @@ export const ContactForm = ({ contacts }) => {
     if (notUniqueName) {
       return alert(`${name} is alredy in contacts!`);
     }
-    dispatch(addContact(name, number));
+    dispatch(addContact(name, phone));
     setName('');
     setNumber('');
   };
@@ -68,7 +68,7 @@ export const ContactForm = ({ contacts }) => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           onChange={handleChange}
-          value={number}
+          value={phone}
         />
       </Label>
 
@@ -80,7 +80,8 @@ export const ContactForm = ({ contacts }) => {
 ContactForm.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.exact({
-      number: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
     })

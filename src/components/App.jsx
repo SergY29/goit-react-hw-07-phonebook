@@ -1,16 +1,30 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { Container } from './App.styled';
 import { ContactForm } from './ContactForm';
 import { ContactList } from './ContactList';
 import { Filter } from './Filter';
-import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from '../redux/contactSlice';
-import { setFilter, getFilter } from '../redux/filterSlice';
+
+import { fetchContacts } from 'redux/operations';
+import { setFilter } from 'redux/filterSlice';
+import {
+  selectContacts,
+  selectError,
+  selectIsLoading,
+  selectFilter,
+} from 'redux/selectors';
 
 export const App = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
-  console.log(contacts);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const filteredNames = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
@@ -25,11 +39,21 @@ export const App = () => {
 
   return (
     <Container>
-      <h1>Phonebook</h1>
-      <ContactForm contacts={contacts} />
-      <h2>Contacts</h2>
-      <Filter filter={filter} onFilter={handleFilter} />
-      <ContactList contacts={filteredNames} />
+      {contacts.length > 0 && (
+        <>
+          <h1>Phonebook</h1>
+          <ContactForm contacts={contacts} />
+          <h2>Contacts</h2>
+          <Filter filter={filter} onFilter={handleFilter} />
+          {isLoading && !error && <b>Request in progress...</b>}
+          <ContactList contacts={filteredNames} />
+        </>
+      )}
     </Container>
   );
 };
+
+//
+//
+//
+//
